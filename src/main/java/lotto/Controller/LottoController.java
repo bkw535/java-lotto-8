@@ -20,7 +20,6 @@ public class LottoController {
 
     public void run() {
         int purchaseAmount = getValidPurchaseAmount();
-
         List<Lotto> lottos = lottoService.getLottos(purchaseAmount);
         outputView.showLottos(lottos);
 
@@ -29,7 +28,11 @@ public class LottoController {
 
         WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
         Map<LottoRank, Integer> result = lottoService.calculateResult(lottos, winningLotto);
+        double earningRate = lottoService.calculateEarningRate(result, purchaseAmount);
+
+        System.out.println();
         outputView.showStatistics(result);
+        outputView.showEarningRate(earningRate);
     }
 
     // 사용자 입력 + 재입력 처리 메서드
