@@ -22,8 +22,10 @@ public class LottoController {
             int amount = inputView.purchase();
             InputValidator.validatePurchase(amount);
             return amount;
-        }
-        catch(IllegalArgumentException e){
+        } catch (NumberFormatException e) {
+            System.out.println("[ERROR] 숫자만 입력해야 합니다.");
+            return getValidPurchaseAmount();
+        } catch(IllegalArgumentException e){
             System.out.println(e.getMessage());
             return getValidPurchaseAmount();
         }
@@ -52,8 +54,10 @@ public class LottoController {
             int amount = inputView.bonusNumber();
             InputValidator.validateBonusNumber(amount, winningNumbers);
             return amount;
-        }
-        catch(IllegalArgumentException e){
+        }  catch (NumberFormatException e) {
+            System.out.println("[ERROR] 숫자만 입력해야 합니다.");
+            return getValidBonusNumber(winningNumbers);
+        } catch(IllegalArgumentException e){
             System.out.println(e.getMessage());
             return getValidBonusNumber(winningNumbers);
         }
