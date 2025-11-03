@@ -1,6 +1,8 @@
 package lotto.Controller;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoRank;
+import lotto.domain.WinningLotto;
 import lotto.service.LottoService;
 import lotto.validator.InputValidator;
 import lotto.view.InputView;
@@ -8,21 +10,26 @@ import lotto.view.OutputView;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class LottoController {
 
     private final InputView inputView = new InputView();
     private final OutputView outputView = new OutputView();
+    private final LottoService lottoService = new LottoService();
 
     public void run() {
         int purchaseAmount = getValidPurchaseAmount();
 
-        LottoService lottoService = new LottoService();
         List<Lotto> lottos = lottoService.getLottos(purchaseAmount);
         outputView.showLottos(lottos);
 
         List<Integer> winningNumbers = getValidWinningNumbers();
         int bonusNumber = getValidBonusNumber(winningNumbers);
+
+        WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
+        Map<LottoRank, Integer> result = lottoService.calculateResult(lottos, winningLotto);
+        outputView.showStatistics(result);
     }
 
     // 사용자 입력 + 재입력 처리 메서드
